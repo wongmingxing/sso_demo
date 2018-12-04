@@ -1,0 +1,27 @@
+version: '3'
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    ports:
+      - 208:80
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./docker/nginx/log:/var/log/nginx
+    depends_on:
+      - php
+    links:
+      - php
+    restart: always
+  php:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    ports:
+      - 9200:9000
+    volumes:
+      - .:/var/www/html
+      - ./docker/php/log:/var/log/php-fpm
+    restart: always
